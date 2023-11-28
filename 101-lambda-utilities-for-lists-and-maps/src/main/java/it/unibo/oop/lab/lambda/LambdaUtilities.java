@@ -20,7 +20,7 @@ import java.util.stream.IntStream;
  * All such methods take as second argument a functional interface from the Java library (java.util.function).
  * This enables calling them by using the concise lambda syntax, as it's done in the main function.
  *
- * Realize the three methods **WITHOUT** using the Stream library, but only leveraging the lambdas.
+ * Realize the three methods **WITHOUT** using the Stream library, but only leveraging the lambdas
  *
  */
 public final class LambdaUtilities {
