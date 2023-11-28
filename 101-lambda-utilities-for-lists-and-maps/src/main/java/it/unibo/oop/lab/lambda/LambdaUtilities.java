@@ -63,9 +63,7 @@ public final class LambdaUtilities {
          * Suggestion: consider Optional.filter
          */
         final List<Optional<T>> newList = new ArrayList<>();
-        list.forEach(arg -> {
-            newList.add(Optional.ofNullable(arg).filter(pre));
-        });
+        list.forEach(arg -> newList.add(Optional.ofNullable(arg).filter(pre)));
         return newList;
     }
 
@@ -91,7 +89,7 @@ public final class LambdaUtilities {
             final Set<T> set = new HashSet<>(Set.of(elem));
             map.merge(ris, set, (oldSet, newSet) -> {
                 newSet.addAll(oldSet);
-                return set;
+                return newSet;
             });
         });
         return map;
@@ -111,9 +109,7 @@ public final class LambdaUtilities {
      */
     public static <K, V> Map<K, V> fill(final Map<K, Optional<V>> map, final Supplier<V> def) {
         final Map<K, V> newMap = new HashMap<>();
-        map.forEach((key, value) -> {
-            newMap.put(key, value.orElse(def.get()));
-        });
+        map.forEach((key, value) -> newMap.put(key, value.orElse(def.get())));
         return newMap;
     }
 
