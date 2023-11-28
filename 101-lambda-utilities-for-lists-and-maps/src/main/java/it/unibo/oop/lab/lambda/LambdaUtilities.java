@@ -2,6 +2,7 @@ package it.unibo.oop.lab.lambda;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -40,8 +41,8 @@ public final class LambdaUtilities {
     public static <T> List<T> dup(final List<T> list, final UnaryOperator<T> op) {
         final List<T> l = new ArrayList<>(list.size() * 2);
         list.forEach(t -> {
-            l.add(t);
-            l.add(op.apply(t));
+            l.add( t );
+            l.add( op.apply(t) );
         });
         return l;
     }
@@ -61,7 +62,17 @@ public final class LambdaUtilities {
         /*
          * Suggestion: consider Optional.filter
          */
-        return null;
+        final List<Optional<T>> newList = new ArrayList<>();
+        list.forEach( arg -> {
+            Optional<T> optional;
+            if ( pre.test(arg) ) {
+                optional = Optional.of( arg );
+            } else {
+                optional = Optional.empty();
+            }
+            newList.add( optional );
+        });
+        return newList;
     }
 
     /**
@@ -80,7 +91,16 @@ public final class LambdaUtilities {
         /*
          * Suggestion: consider Map.merge
          */
-        return null;
+        final Map<R, Set<T>> map = new HashMap<>();
+        list.forEach( elem -> {
+            R ris = op.apply( elem );
+            Set<T> set = new HashSet<>( Set.of(elem) );
+            map.merge( ris,set, (oldSet, newSet) -> {
+                newSet.addAll( oldSet );
+                return set;
+            } );
+        });
+        return map;
     }
 
     /**
@@ -96,12 +116,15 @@ public final class LambdaUtilities {
      *         by the supplier
      */
     public static <K, V> Map<K, V> fill(final Map<K, Optional<V>> map, final Supplier<V> def) {
-        /*
-         * Suggestion: consider Optional.orElse
-         *
-         * Keep in mind that a map can be iterated through its forEach method
-         */
-        return null;
+        final Map<K,V> newMap = new HashMap<>();
+        for( K i: map.keySet() ){
+            if (map.get(i).isEmpty() ){
+                newMap.put( i,def.get() );
+            }else{
+                newMap.put( i, map.get(i).get() );
+            }
+        }
+        return newMap;
     }
 
     /**
