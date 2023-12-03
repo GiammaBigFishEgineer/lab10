@@ -8,6 +8,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 /**
  * This class implements a view that can write on any PrintStream.
  */
@@ -56,6 +59,11 @@ public final class PrintStreamView implements DrawNumberView {
     @Override
     public void result(final DrawResult res) {
         out.println(res.getDescription());
+    }
+
+    @Override
+    public void displayError(String message) {
+        JOptionPane.showMessageDialog(new JPanel(),message);
     }
 
 }

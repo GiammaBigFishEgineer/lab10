@@ -1,15 +1,20 @@
 package it.unibo.mvc;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  */
 public final class DrawNumberApp implements DrawNumberViewObserver {
-    private static final int MIN = 0;
-    private static final int MAX = 100;
-    private static final int ATTEMPTS = 10;
+    private int MIN;
+    private int MAX;
+    private int ATTEMPTS;
 
     private final DrawNumber model;
     private final List<DrawNumberView> views;
@@ -17,8 +22,10 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
     /**
      * @param views
      *            the views to attach
+     * @throws IOException
+     * @throws FileNotFoundException
      */
-    public DrawNumberApp(final DrawNumberView... views) {
+    public DrawNumberApp(final DrawNumberView... views) throws FileNotFoundException, IOException {
         /*
          * Side-effect proof
          */
@@ -26,6 +33,21 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
         for (final DrawNumberView view: views) {
             view.setObserver(this);
             view.start();
+        }
+
+        Map<String,Integer> map = ReadFile.read("config.yml");
+        for(var i: map.keySet()){
+            switch (i) {
+                case "minimum":
+                    this.MIN = map.get(i);
+                    break;
+                case "maximum":
+                    this.MAX = map.get(i);
+                    break;
+                case "attempts":
+                    this.ATTEMPTS = map.get(i);
+                    break;
+            }
         }
         this.model = new DrawNumberImpl(MIN, MAX, ATTEMPTS);
     }
@@ -63,9 +85,9 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
     /**
      * @param args
      *            ignored
-     * @throws FileNotFoundException 
+     * @throws IOException
      */
-    public static void main(final String... args) throws FileNotFoundException {
+    public static void main(final String... args) throws IOException {
         new DrawNumberApp(new DrawNumberViewImpl());
     }
 

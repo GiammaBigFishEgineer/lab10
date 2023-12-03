@@ -26,4 +26,5 @@ public interface DrawNumberView {
     void result(DrawResult res);
 
     void displayError(String message);
+
 }
